@@ -1,4 +1,8 @@
-var Liquid = {
+// Tan Nhu's Note: Fork this lib and export Liquid only
+
+;(function(){
+
+window.Liquid = {
 
   author: 'Matt McCray <darthapo@gmail.com>',
   version: '1.3.1',
@@ -151,9 +155,9 @@ Liquid.extensions.object.hasValue = function(arg) {
 (function(){
   var initializing = false, fnTest = /xyz/.test(function(){xyz;}) ? /\b_super\b/ : /.*/;
 
-  this.Class = function(){};
+  this.LiquidClass = function(){};
 
-  Class.extend = function(prop) {
+  LiquidClass.extend = function(prop) {
     var _super = this.prototype;
 
     initializing = true;
@@ -178,22 +182,22 @@ Liquid.extensions.object.hasValue = function(arg) {
         prop[name];
     }
 
-    function Class() {
+    function LiquidClass() {
       if ( !initializing && this.init )
         this.init.apply(this, arguments);
     }
 
-    Class.prototype = prototype;
+    LiquidClass.prototype = prototype;
 
-    Class.prototype.constructor = Class;
+    LiquidClass.prototype.constructor = LiquidClass;
 
-    Class.extend = arguments.callee;
+    LiquidClass.extend = arguments.callee;
 
-    return Class;
+    return LiquidClass;
   };
 })();
 
-Liquid.Tag = Class.extend({
+Liquid.Tag = LiquidClass.extend({
 
   init: function(tagName, markup, tokens) {
     this.tagName = tagName;
@@ -299,7 +303,7 @@ Liquid.Document = Liquid.Block.extend({
   assertMissingDelimitation: function() {
   }
 });
-Liquid.Strainer = Class.extend({
+Liquid.Strainer = LiquidClass.extend({
 
   init: function(context) {
     this.context = context;
@@ -330,7 +334,7 @@ Liquid.Strainer.create = function(context) {
   }
   return strainer;
 }
-Liquid.Context = Class.extend({
+Liquid.Context = LiquidClass.extend({
 
   init: function(assigns, registers, rethrowErrors) {
     this.scopes = [ assigns ? assigns : {} ];
@@ -531,7 +535,7 @@ Liquid.Context = Class.extend({
   }
 
 });
-Liquid.Template = Class.extend({
+Liquid.Template = LiquidClass.extend({
 
   init: function() {
     this.root = null;
@@ -608,7 +612,7 @@ Liquid.Template.tokenize = function(src) {
 Liquid.Template.parse =  function(src) {
   return (new Liquid.Template()).parse(src);
 }
-Liquid.Variable = Class.extend({
+Liquid.Variable = LiquidClass.extend({
 
   init: function(markup) {
     this.markup = markup;
@@ -653,7 +657,7 @@ Liquid.Variable = Class.extend({
     return output;
   }
 });
-Liquid.Condition = Class.extend({
+Liquid.Condition = LiquidClass.extend({
 
   init: function(left, operator, right) {
     this.left = left;
@@ -748,7 +752,7 @@ Liquid.ElseCondition = Liquid.Condition.extend({
   }
 
 });
-Liquid.Drop = Class.extend({
+Liquid.Drop = LiquidClass.extend({
   setContext: function(context) {
     this.context = context;
   },
@@ -1537,4 +1541,5 @@ split = split || function (undef) {
 
 }();
 
-module.exports = Liquid;
+// module.exports = Liquid;
+})();
